@@ -37,10 +37,11 @@ def send():
         'best_flights': best_flights[:10]
     })
 
-@app.route('/record', methods=['POST'])
+@app.route('/record', methods=['GET'])
 def record():
 
     transcript = audio_to_input()
+
     return {
         'ok': True,
         'transcription': transcript

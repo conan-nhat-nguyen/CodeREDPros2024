@@ -17,6 +17,7 @@
 
 # Challenges
 - Convert the input cities to their airport code.
+- Convert the different input dates to a uniform format.
 - Handle the front-end input to make an understandable JSON file in the back-end for further generation.
 
 # Accomplishments

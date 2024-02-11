@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGPT-like Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
@@ -20,15 +21,25 @@
             </div>
         </div>
         <form class="message-form">
-            <input type="text" id="input-text" name="input-text" class="form-control" placeholder="Type your message...">
+            <div style="width: 100%; margin-bottom: 5px;">
+                <input type="text" id="input-text" name="input-text" class="form-control" placeholder="Type your message...">
+            </div>
+            <div class="overlay"><i class="fa fa-microphone" id="mic" status="off" style="font-size:20px; margin-left: auto;"></i></div>
             <button type="submit" id="submit-btn" class="btn btn-primary">Send</button>
         </form>
     </div>
     <script>
         const form = document.querySelector('.message-form');
+
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const inputText = document.getElementById('input-text').value;
+            
+            if (inputText === "") {
+                return;
+            }
+
             const chatContainer = document.querySelector('.chat-container');
 
             console.log(inputText)
@@ -84,6 +95,24 @@
 
                     // Cast price to a number
                     let price = parseFloat(data[i]['price']['total']).toFixed(2);
+                    let currency = data[i]['price']['currency'];
+
+                    if (currency != 'USD') {
+                        const api_key = "0ec39546577a007a413f51c1"
+
+                        const money_api_url = `https://v6.exchangerate-api.com/v6/${api_key}/pair/${currency}/USD/${price}`
+
+                        fetch(money_api_url, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(response => response.json()).then(data => {
+                            price = data['conversion_result']['value'].toFixed(2);
+                        })
+
+                    }
+
                     let segments = data[i]['itineraries'][0]['segments'];
                     let numberOfSegments = segments.length;
 
@@ -130,7 +159,7 @@
                         `;
                     }
 
-                    itinerariesBlock.innerHTML += `<p>Price: ${price}</p>`
+                    itinerariesBlock.innerHTML += `<p>Price: ${price} USD</p>`
                     messageBlock.appendChild(itinerariesBlock);
 
                     botMessage.appendChild(messageBlock);
@@ -145,6 +174,8 @@
                 console.error('Error:', error);
             });
         })
+        
     </script>
+    <script src="{{ url_for('static', filename='record.js') }}"></script>
 </body>
 </html>

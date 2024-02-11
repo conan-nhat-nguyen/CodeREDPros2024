@@ -9,10 +9,6 @@ body.dark-theme {
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
 }
 
 .chat-container {

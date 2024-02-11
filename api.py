@@ -40,21 +40,10 @@ def send():
 @app.route('/record', methods=['POST'])
 def record():
 
-    request_data = request.files
-
-    print(request_data, flush=True)
-    # audio.save('./speech_to_text/audio.wav')
-
-
-    # transcript = audio_to_input()
-
-    # return {
-    #     'ok': True,
-    #     'transcription': transcript
-    # }
+    transcript = audio_to_input()
     return {
         'ok': True,
-        'transcription': "Hello"
+        'transcription': transcript
     
     }
 

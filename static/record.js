@@ -22,19 +22,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             let formData = new FormData()
             formData.append('audio', blob, 'audio.wav')
 
-            fetch('/record', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'audio/wav'
-                },
-                body: formData
-            }).then(response => {
-                return response.json()
-            }).then(data => {
-                console.log(data)
-            }).catch(error => {
-                console.log('Following error has occured : ',error)
-            })
+            
 
         }
     }).catch(error => {
@@ -44,6 +32,15 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
 
 const record = () => {
     mediaRecorder.start()
+    fetch('/record', {
+        method: 'GET',
+    }).then(response => {
+        return response.json()
+    }).then(data => {
+        document.getElementById('input-text').value = data.transcription
+    }).catch(error => {
+        console.log('Following error has occured : ',error)
+    })
 }
 
 const stopRecording = () => {

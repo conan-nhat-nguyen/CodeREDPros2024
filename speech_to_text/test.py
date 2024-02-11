@@ -25,7 +25,7 @@ departure_id = "IAH"
 destination_id = "JFK"
 departure_id = "2024-05-02"
 endpoint_url = "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode={departure_id}&destinationLocationCode={destination_id}&departureDate={departure_date}&adults=1&max=2"
-token_flight = "uc1w8WOBh3A2l9AKo8F6IsoPAX8n"
+token_flight = "OZBbQLIArc7cFf3fKSf0jv2LGGA1"
 
 headers_flight = {"Authorization" : "Bearer " + token_flight}
 
@@ -36,12 +36,19 @@ response = requests.get(endpoint_url, headers=headers_flight)
 if response.status_code == 200:
     # Parse the JSON response
     data = response.json()
+    json_string = json.dumps(data, indent = 0)
+    with open("out.json", 'w') as file:
+        file.write(json_string)
     # Extract and process the relevant data
     # (e.g., access 'data' field in the JSON response)
     print(data['data'])
 else:
     # Handle errors or non-200 status codes
     print("Error:", response.status_code)
+
+documents = SimpleDirectoryReader('out.json').load_data()
+print(documents)
+index = GPTVectorStoreIndex.from_documents(documents)
 
 # llm = OpenAI(model="gpt-3.5-turbo")
 # service_context = ServiceContext.from_defaults(llm=llm)

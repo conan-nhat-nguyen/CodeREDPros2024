@@ -2,24 +2,24 @@ import requests
 from converter import *
 from prompt_to_json import *
 
-def get_flight_url(departure_city, destination_city, departure_date, return_date=None):
+def get_flight_url(destination_city, departure_date, return_date=None, travellers=1, baggage_quantity=1, departure_city="Houston"):
     departure_id_array = city_converter(departure_city)
 
     destination_id_array = city_converter(destination_city)
     departure_date = date_format(departure_date)
-    if (return_date): return_date = date_format(return_date) 
+    if (return_date): return_date = date_format(return_date)
 
     url_array = []
     for departure_id in departure_id_array:
         for destination_id in destination_id_array:
-            url = f"https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode={departure_id}&destinationLocationCode={destination_id}&departureDate={departure_date}&adults=1&nonStop=false&max=250"
+            url = f"https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode={departure_id}&destinationLocationCode={destination_id}&departureDate={departure_date}&adults={travellers}&nonStop=false&max=250"
             if (return_date): url += f"&returnDate={return_date}"
             url_array.append(url)
 
     return url_array
 
 def get_best_flights(user_input):
-    token_flight = "AjYDu8LKmCAIEmcJPXTNHZvAtVUs"
+    token_flight = "hUyNe4Sq02kXlnPv5Q5ICGhPeJXP"
 
     headers_flight = {"Authorization" : "Bearer " + token_flight}
 

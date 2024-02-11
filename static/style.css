@@ -8,6 +8,13 @@ body.dark-theme {
     text-align: center;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
 .chat-container {
     background-color: #333;
     border: 1px solid #555;
@@ -66,6 +73,8 @@ body.dark-theme {
 .input-text {
     flex: 1;
     margin-right: 10px;
+    margin-bottom: 5px;
+    width: 100%;
 }
 
 .depart, .arrive {
@@ -76,4 +85,9 @@ body.dark-theme {
     /* add shadow */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border-radius: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
 }

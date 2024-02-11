@@ -45,14 +45,12 @@ def speech_to_audio():
     return filename
 
 def audio_to_input():
-    filename = speech_to_audio()
-    client = OpenAI(api_key='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')
+    filename = "./output.wav"
+    client = OpenAI(api_key=)
 
     audio_file= open(filename, "rb")
     transcript = client.audio.translations.create(
-    model="whisper-1", 
-    file=audio_file
-  )
+        model="whisper-1", 
+        file=audio_file
+    )
     return transcript.text
-
-print(audio_to_input())

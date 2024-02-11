@@ -15,7 +15,7 @@
         <div class="chat-container">
             <div class="chat-message">
                 <div class="chat-message-content bot-message">
-                    <p>Hello, how can I assist you?</p>
+                    <p>Hello I will help you with flights booking, can you provide information about your plan? (where you are planning to go, where you are, when you are traveling)</p>
                 </div>
             </div>
         </div>
@@ -59,6 +59,20 @@
             .then(response => response.json())
             .then(data => {
                 
+                if (!data.ok) {
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('chat-message');
+                    botMessage.innerHTML = `
+                        <div class="chat-message-content bot-message">
+                            <p>${data.message}</p>
+                        </div>
+                    `;
+                    chatContainer.appendChild(botMessage);
+                    document.querySelector('#submit-btn').disabled = false;
+                    document.querySelector('.logo').src = "{{ url_for('static', filename='images/vpt_logo.jpg') }}"
+                    return;
+                }
+
                 console.log(data)
 
                 document.querySelector('.chat-message').scrollIntoView({ behavior: 'smooth' });  
@@ -68,7 +82,8 @@
                     const botMessage = document.createElement('div');
                     botMessage.classList.add('chat-message');
 
-                    let price = data[i]['price']['total'];
+                    // Cast price to a number
+                    let price = parseFloat(data[i]['price']['total']).toFixed(2);
                     let segments = data[i]['itineraries'][0]['segments'];
                     let numberOfSegments = segments.length;
 
@@ -81,19 +96,41 @@
 
                     for (let j in segments) {
                         if (j != 0) {
-                            itinerariesBlock.innerHTML += `<p>Then:</p>`
+                            itinerariesBlock.innerHTML += `<p>Then</p>`
+                        }
+                        
+                        // https://content.airhex.com/content/logos/airlines_SU_100_100_s.png
+
+                        const formatedDeparture = new Date(segments[j]['departure']['at'])
+                        const formatedArrival = new Date(segments[j]['arrival']['at'])
+
+                        const timezone = new Date().toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ')[2];
+
+                        console.log(timezone)
+
+                        let imgLink = `<img src="https://content.airhex.com/content/logos/airlines_${segments[j]['carrierCode'].substring(0, 2)}_100_100_s.png" />`
+
+                        if (j > 0 && segments[j]['carrierCode'].substring(0, 2) == segments[j - 1]['carrierCode'].substring(0, 2)) {
+                            imgLink = '';
                         }
 
-
                         itinerariesBlock.innerHTML += `
-                            <p>Departure: ${segments[j]['departure']['iataCode']} at ${segments[j]['departure']['at']}</p>
-                            <p>Arrival: ${segments[j]['arrival']['iataCode']} at ${segments[j]['arrival']['at']}</p>
-                            <p>Airline: ${segments[j]['carrierCode']}${segments[j]['number']}</p>
+                            ${imgLink}
+                            <div class="timeline-block">
+                                <div class="depart">
+                                    <p>Depart ${segments[j]['departure']['iataCode']} - ${formatedDeparture.getHours()}:${formatedDeparture.getMinutes() < 10 ? "0" + formatedDeparture.getMinutes() : formatedDeparture.getMinutes()} ${timezone}</p>
+                                    <p>${formatedDeparture.getMonth()}/${formatedDeparture.getDate()}/${formatedDeparture.getFullYear()}</p>
+                                </div>
+                                <span style="font-size: 5rem">&#8594;</span>
+                                <div class="arrive">
+                                    <p>Arrival ${segments[j]['arrival']['iataCode']} at ${formatedArrival.getHours()}:${formatedArrival.getMinutes() < 10 ? "0" + formatedArrival.getMinutes() : formatedArrival.getMinutes()} ${timezone}</p>
+                                    <p>${formatedArrival.getMonth()}/${formatedArrival.getDate()}/${formatedArrival.getFullYear()}</p>
+                                </div>        
+                            </div>
                         `;
                     }
 
-                    console.log(data);
-
+                    itinerariesBlock.innerHTML += `<p>Price: ${price}</p>`
                     messageBlock.appendChild(itinerariesBlock);
 
                     botMessage.appendChild(messageBlock);

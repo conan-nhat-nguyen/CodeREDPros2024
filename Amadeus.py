@@ -19,12 +19,16 @@ def get_flight_url(departure_city, destination_city, departure_date, return_date
     return url_array
 
 def get_best_flights(user_input):
-    token_flight = "U912ugN41pGFvGMIqzY6KuhAZ79P"
+    token_flight = "AjYDu8LKmCAIEmcJPXTNHZvAtVUs"
 
     headers_flight = {"Authorization" : "Bearer " + token_flight}
 
 
     user_data = extract_to_json(user_input)
+
+    if (not user_data['departure_date'] or not user_data['departure'] or not user_data['destination']):
+        raise Exception("Error: Required fields not found in the user input")
+    
 
     req_url_array = get_flight_url(user_data['departure'], user_data['destination'], user_data['departure_date'])
 

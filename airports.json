@@ -108,6 +108,18 @@
     "objectID": "3797"
   },
   {
+    "name": "John F Kennedy Intl",
+    "city": "New York City",
+    "country": "United States",
+    "iata_code": "JFK",
+    "_geoloc": {
+      "lat": 40.639751,
+      "lng": -73.778925
+    },
+    "links_count": 911,
+    "objectID": "3797"
+  },
+  {
     "name": "Schiphol",
     "city": "Amsterdam",
     "country": "Netherlands",
@@ -1130,6 +1142,18 @@
   {
     "name": "La Guardia",
     "city": "New York",
+    "country": "United States",
+    "iata_code": "LGA",
+    "_geoloc": {
+      "lat": 40.777245,
+      "lng": -73.872608
+    },
+    "links_count": 316,
+    "objectID": "3697"
+  },
+  {
+    "name": "La Guardia",
+    "city": "New York City",
     "country": "United States",
     "iata_code": "LGA",
     "_geoloc": {

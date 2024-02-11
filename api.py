@@ -12,12 +12,21 @@ def home():
 def send():
     input = json.loads(request.data)['inputText']
 
-    best_flights = get_best_flights(input)
+
+    try:
+        best_flights = get_best_flights(input)
+    except:
+        return jsonify({
+            'ok': False,
+            'message': "Can you provide more information? I need a departure city, a destination city, and a departure date to find a flight."
+        })
+
 
     # Sort the best_flights by price
-    best_flights.sort(key=lambda x: x['price']['total'], reverse=False)
+    best_flights.sort(key=lambda x: x['price']['grandTotal'], reverse=False)
 
     return jsonify({
+        'ok': True,
         'best_flights': best_flights[:10]
     })
 

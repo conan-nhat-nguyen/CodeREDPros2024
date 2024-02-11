@@ -5,7 +5,6 @@ body.dark-theme {
 
 .container {
     max-width: 600px;
-    margin: 50px auto;
     text-align: center;
 }
 
@@ -14,8 +13,8 @@ body.dark-theme {
     border: 1px solid #555;
     border-radius: 5px;
     overflow-y: auto;
-    height: 60vh;
-    max-height: 400px;
+    height: 70vh;
+    max-height: 600px;
     padding: 10px;
 }
 
@@ -29,24 +28,24 @@ body.dark-theme {
 
 .chat-message-content {
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     max-width: 80%;
     word-wrap: break-word;
 }
 
 .user-message {
-    background-color: #8b8b8b;
-    color: #fff;
+    background-color: #171717;
+    color: #cecece;
     align-self: flex-end;
     margin-left: auto;
     border: #fff 1px solid;
 }
 
 .bot-message {
-    background-color: #121212;
-    color: #fff;
+    background-color: #d9d9d9;
+    color: #000000;
     align-self: flex-start;
-    border: #fff 1px solid;
+    border: #000000 1px solid;
 }
 
 .message-form {
@@ -56,7 +55,25 @@ body.dark-theme {
     
 }
 
+.timeline-block {
+    display: flex;
+    opacity: 0.8;
+    font-weight: bold;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .input-text {
     flex: 1;
     margin-right: 10px;
+}
+
+.depart, .arrive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    /* add shadow */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }

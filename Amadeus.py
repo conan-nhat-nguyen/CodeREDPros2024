@@ -43,6 +43,6 @@ async def main():
         best_flights_all += response_flight.json()['data'][:2]
 
 
-    print(len(best_flights_all))
+    print(best_flights_all[0].keys())
 
 asyncio.run(main())

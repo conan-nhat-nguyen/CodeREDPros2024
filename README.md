@@ -4,8 +4,8 @@
 
 
 
-# What Is Does
-- Create an airline chatbox that when the users type in their cirtiria, it going to look up the suitable flight for them.
+# What It Does
+- Create an airline chatbox that when the users type in their criteria, it is going to look up the suitable flight for them.
 - Extract users' input to JSON file using OpenAI.
 - Insert the JSON file to Amadeus API to generate the matching results to another JSON file.
 - Use OpenAI to convert the result JSON file back to NLP and output the answer to the users.

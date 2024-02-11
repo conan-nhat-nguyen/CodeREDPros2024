@@ -1,7 +1,6 @@
 import requests
 from converter import *
 from prompt_to_json import *
-import asyncio
 
 def get_flight_url(departure_city, destination_city, departure_date, return_date=None):
     departure_id_array = city_converter(departure_city)
@@ -19,30 +18,27 @@ def get_flight_url(departure_city, destination_city, departure_date, return_date
 
     return url_array
 
-async def main():
-    token_flight = "hSAHjug5w2OjWLoqhfXx8GALQtZL"
+def get_best_flights(user_input):
+    token_flight = "U912ugN41pGFvGMIqzY6KuhAZ79P"
 
     headers_flight = {"Authorization" : "Bearer " + token_flight}
 
 
-    user_data = extract_to_json("I want to book a flight from Houston to New York on May 6th 2024")
-
-    user_data = user_data['text']
-
-    print(user_data)
-
-    await asyncio.sleep(2)
+    user_data = extract_to_json(user_input)
 
     req_url_array = get_flight_url(user_data['departure'], user_data['destination'], user_data['departure_date'])
 
-
     best_flights_all = []
+
+    print(req_url_array)
 
     for req_url in req_url_array:
         response_flight = requests.get(req_url, headers=headers_flight)
-        best_flights_all += response_flight.json()['data'][:2]
+        
+        if 'data' in response_flight.json():
+            best_flights_all += response_flight.json()['data']
+        else:
+            print(response_flight.json())
+            print("Error: 'data' key not found in the response JSON")
 
-
-    print(best_flights_all[0].keys())
-
-asyncio.run(main())
+    return best_flights_all

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT-like Interface</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body class="dark-theme">
+    <div class="container">
+        <!-- Adding the image in the top left corner -->
+        <img src="{{ url_for('static', filename='images/vpt_logo.jpg') }}" class="logo" alt="Logo">
+        <div class="chat-container">
+            <div class="chat-message">
+                <div class="chat-message-content bot-message">
+                    <p>Hello, how can I assist you?</p>
+                </div>
+            </div>
+        </div>
+        <form class="message-form">
+            <input type="text" id="input-text" name="input-text" class="form-control" placeholder="Type your message...">
+            <button type="submit" id="submit-btn" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+    <script>
+        const form = document.querySelector('.message-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const inputText = document.getElementById('input-text').value;
+            const chatContainer = document.querySelector('.chat-container');
+
+            console.log(inputText)
+
+            // Add user message to chat
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('chat-message');
+            userMessage.innerHTML = `
+                <div class="chat-message-content user-message">
+                    <p>${inputText}</p>
+                </div>
+            `;
+            
+            chatContainer.appendChild(userMessage);
+            document.getElementById('input-text').value = "";
+
+            
+            document.querySelector('#submit-btn').disabled = true;
+            document.querySelector('.logo').src = "{{ url_for('static', filename='images/loading.gif') }}"
+
+            fetch('/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({inputText: inputText})
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                console.log(data)
+
+                document.querySelector('.chat-message').scrollIntoView({ behavior: 'smooth' });  
+                data = data['best_flights'];              
+                for (let i = 0; i < data.length; i++) {
+                    
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('chat-message');
+
+                    let price = data[i]['price']['total'];
+                    let segments = data[i]['itineraries'][0]['segments'];
+                    let numberOfSegments = segments.length;
+
+                    let messageBlock = document.createElement('div');
+                    messageBlock.classList.add('chat-message-content');
+                    messageBlock.classList.add('bot-message');
+                    
+                    let itinerariesBlock = document.createElement('div');
+
+
+                    for (let j in segments) {
+                        if (j != 0) {
+                            itinerariesBlock.innerHTML += `<p>Then:</p>`
+                        }
+
+
+                        itinerariesBlock.innerHTML += `
+                            <p>Departure: ${segments[j]['departure']['iataCode']} at ${segments[j]['departure']['at']}</p>
+                            <p>Arrival: ${segments[j]['arrival']['iataCode']} at ${segments[j]['arrival']['at']}</p>
+                            <p>Airline: ${segments[j]['carrierCode']}${segments[j]['number']}</p>
+                        `;
+                    }
+
+                    console.log(data);
+
+                    messageBlock.appendChild(itinerariesBlock);
+
+                    botMessage.appendChild(messageBlock);
+                    chatContainer.appendChild(botMessage);
+
+                    document.querySelector('#submit-btn').disabled = false;
+                    document.querySelector('.logo').src = "{{ url_for('static', filename='images/vpt_logo.jpg') }}"
+
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        })
+    </script>
+</body>
+</html>

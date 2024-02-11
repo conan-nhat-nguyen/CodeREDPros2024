@@ -9,7 +9,7 @@ from dotenv import dotenv_values
 
 config = dotenv_values(".env")
 
-def extract_to_json(userInput):
+def extract_to_json(userInput) -> dict[str, any]:
 
 
     # class Properties(BaseModel):
@@ -30,9 +30,11 @@ def extract_to_json(userInput):
     }
 
 
-    llm = ChatOpenAI(openai_api_key=config['OPENAI_API_KEY'], model="gpt-3.5-turbo")
+    llm = ChatOpenAI(openai_api_key=config['OPEN_API'], model="gpt-3.5-turbo")
 
     chain = create_extraction_chain(schema, llm)
     res = chain.invoke(userInput)
 
-    return res
+    if (type(res['text']) == list) : return res['text'][0]
+
+    return res['text']

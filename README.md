@@ -1,5 +1,9 @@
 # CodeREDPros2024
 
+<img src="https://github.com/conan-nhat-nguyen/CodeREDPros2024/blob/main/icon.jpg" width="100" height="100">
+
+
+
 # What Is Does
 - Create an airline chatbox that when the users type in their cirtiria, it going to look up the suitable flight for them.
 - Extract users' input to JSON file using OpenAI.

@@ -2,7 +2,7 @@ import requests
 from converter import *
 from prompt_to_json import *
 
-def get_flight_url(destination_city, departure_date, return_date=None, travellers=1, baggage_quantity=1, departure_city="Houston"):
+def get_flight_url(departure_city, destination_city, departure_date, travellers, return_date = None, baggage_quantity = 1):
     departure_id_array = city_converter(departure_city)
 
     destination_id_array = city_converter(destination_city)
@@ -19,7 +19,7 @@ def get_flight_url(destination_city, departure_date, return_date=None, traveller
     return url_array
 
 def get_best_flights(user_input):
-    token_flight = "hUyNe4Sq02kXlnPv5Q5ICGhPeJXP"
+    token_flight = "GFylV9yaVKgIlE4p3AO8g7xRhEOz"
 
     headers_flight = {"Authorization" : "Bearer " + token_flight}
 
@@ -28,9 +28,8 @@ def get_best_flights(user_input):
 
     if (not user_data['departure_date'] or not user_data['departure'] or not user_data['destination']):
         raise Exception("Error: Required fields not found in the user input")
-    
 
-    req_url_array = get_flight_url(user_data['departure'], user_data['destination'], user_data['departure_date'])
+    req_url_array = get_flight_url(user_data['departure'], user_data['destination'], user_data['departure_date'], user_data.get('travellers', 1))
 
     best_flights_all = []
 

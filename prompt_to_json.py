@@ -24,10 +24,10 @@ def extract_to_json(userInput) -> dict[str, any]:
 
     schema = {
         "properties": {
+            "departure": {"type": "string"},
+            "destination": {"type": "string"},
             "departure_date": {"type": "string"},
             "return_date": {"type": "string"},
-            "destination": {"type": "string"},
-            "departure": {"type": "string"},
             "baggage_quantity": {"type": "integer"},
             "travellers": {"type": "integer"},          
         },

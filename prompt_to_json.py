@@ -3,11 +3,10 @@ from openai import OpenAI
 from typing import Optional, List
 from pydantic import Field
 from langchain_core.pydantic_v1 import BaseModel
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chains import create_extraction_chain
 
-def extract_to_json(userInput) -> dict:
-    client = OpenAI(api_key='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')
+def extract_to_json(userInput):
 
 
     # class Properties(BaseModel):
@@ -28,10 +27,9 @@ def extract_to_json(userInput) -> dict:
     }
 
 
-    llm = ChatOpenAI(openai_api_key="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")
+    llm = ChatOpenAI(openai_api_key="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")
 
     chain = create_extraction_chain(schema, llm)
-    res = chain.run(userInput)
-
+    res = chain.invoke(userInput)
 
     return res

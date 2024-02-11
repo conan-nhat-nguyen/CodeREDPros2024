@@ -5,6 +5,9 @@ from pydantic import Field
 from langchain_core.pydantic_v1 import BaseModel
 from langchain_openai import ChatOpenAI
 from langchain.chains import create_extraction_chain
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
 
 def extract_to_json(userInput):
 
@@ -27,7 +30,7 @@ def extract_to_json(userInput):
     }
 
 
-    llm = ChatOpenAI(openai_api_key="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")
+    llm = ChatOpenAI(openai_api_key=config['OPENAI_API_KEY'], model="gpt-3.5-turbo")
 
     chain = create_extraction_chain(schema, llm)
     res = chain.invoke(userInput)

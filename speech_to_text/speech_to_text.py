@@ -46,7 +46,7 @@ def speech_to_audio():
 
 def audio_to_input():
     filename = "./output.wav"
-    client = OpenAI(api_key=)
+    client = OpenAI(api_key=OPEN_API)
 
     audio_file= open(filename, "rb")
     transcript = client.audio.translations.create(
